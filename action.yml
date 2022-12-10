@@ -1,0 +1,5 @@
+name: 'Daily Darshan'
+description: 'GH Action for automate Daily Darshan.'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
