@@ -52,7 +52,7 @@ async function createVideo( temple, darshanDate ) {
 
     return new Promise( (resolve, reject) => {
         videoshow(processedImages, videoOptions)
-            .audio('../audio/1.mp3')
+            .audio('./audio/1.mp3')
             .save(`${temple}.mp4`)
             .on('start', function (command) {
                 console.log('ffmpeg process started:', command)
