@@ -2,10 +2,10 @@ const videoshow = require('videoshow');
 
 const getImages = require('./download');
 
-async function createVideo( temple, darshanDate ) {
-    const images = await getImages( temple, darshanDate );
-    console.log( images );
-    if ( ! images.length ) {
+async function createVideo(temple, darshanDate) {
+    const images = await getImages(temple, darshanDate);
+    console.log(images);
+    if (!images.length) {
         return;
     }
 
@@ -23,7 +23,7 @@ async function createVideo( temple, darshanDate ) {
         pixelFormat: 'yuv420p',
         useSubRipSubtitles: false, // Use ASS/SSA subtitles instead
         subtitleStyle: {
-            Fontname: "Verdana",
+            Fontname: "Arial",
             Fontsize: "48",
             PrimaryColour: "11861244",
             SecondaryColour: "11861244",
@@ -43,16 +43,17 @@ async function createVideo( temple, darshanDate ) {
 
     const processedImages = images.filter(n => n);
     try {
-        let loop = round( (60 - processedImages.length) / ( processedImages.length ) );
-        if ( loop > 5 ) {
+        let loop = round((60 - processedImages.length) / (processedImages.length));
+        if (loop > 5) {
             loop = 5;
         }
         videoOptions.loop = loop;
-    } catch (error) {}
+    } catch (error) { }
 
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
+        const audioName = getRandomInt(14);
         videoshow(processedImages, videoOptions)
-            .audio('./audio/1.mp3')
+            .audio(`./audio/${audioName}.mp3`)
             .save(`${temple}.mp4`)
             .on('start', function (command) {
                 console.log('ffmpeg process started:', command)
@@ -68,5 +69,10 @@ async function createVideo( temple, darshanDate ) {
             })
     });
 }
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+
 
 module.exports = createVideo;
