@@ -21,27 +21,10 @@ async function createVideo(temple, darshanDate) {
         audioChannels: 2,
         format: 'mp4',
         pixelFormat: 'yuv420p',
-        useSubRipSubtitles: false, // Use ASS/SSA subtitles instead
-        subtitleStyle: {
-            Fontname: "Arial",
-            Fontsize: "48",
-            PrimaryColour: "11861244",
-            SecondaryColour: "11861244",
-            TertiaryColour: "11861244",
-            BackColour: "-2147483640",
-            Bold: "2",
-            Italic: "0",
-            BorderStyle: "2",
-            Outline: "2",
-            Shadow: "3",
-            Alignment: "2", // left, middle, right
-            MarginL: "40",
-            MarginR: "60",
-            MarginV: "40"
-        }
     }
 
     const processedImages = images.filter(n => n);
+    processedImages.push({path: './logo/last.png'});
     try {
         let loop = round((60 - processedImages.length) / (processedImages.length));
         if (loop > 5) {
