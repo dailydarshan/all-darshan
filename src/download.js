@@ -77,13 +77,12 @@ async function getTextImage(mandir) {
                 align: 'center',
                 text: `<span foreground="white">${caption}</span>`,
                 width: 1080,
-                height: 160,
+                height: 100,
                 rgba: true
             }
         }).png();
         const { width } = await text.metadata();
         const left = Math.floor( 540 - (width/2) );
-        console.log(left);
         const textImage = await text.toBuffer();
         
         return { 
