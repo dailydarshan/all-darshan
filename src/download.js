@@ -30,8 +30,16 @@ function getDarshanImages(darshanDate, mandir) {
 async function processImage(image, index, mandir) {
     const path = `${os.tmpdir()}/${mandir.toLowerCase()}${index}.jpg`;
     const svgBuffer = await getTextImage(mandir);
+    let image1 = await sharp(image).resize({width:1080});
+    const { height } = await image1.metadata();
+    if(height > 1920) {
+        image1 = await image1.resize({height: 1920}).toBuffer();
+    }else{
+        image1 = await image1.toBuffer();
+    }
+
     const images = [
-        { input: image },
+        { input: image1 },
         {
             input: './logo/logo.png',
             top: 20,
@@ -47,7 +55,7 @@ async function processImage(image, index, mandir) {
         });
     }
     return sharp(image)
-        .blur(25)
+        .blur(30)
         .resize({
             width: 1080,
             height: 1920,
