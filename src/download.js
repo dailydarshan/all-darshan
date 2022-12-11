@@ -30,7 +30,7 @@ function getDarshanImages(darshanDate, mandir) {
 
 async function processImage(image, index, mandir) {
     const path = `${os.tmpdir()}/${mandir.toLowerCase()}${index}.jpg`;
-    const svgBuffer = await getTextImage(mandir);
+    const textImage = await getTextImage(mandir);
     let image1 = await sharp(image).resize({width:1080});
     const { height } = await image1.metadata();
     if(height > 1920) {
@@ -48,12 +48,9 @@ async function processImage(image, index, mandir) {
             blend: 'soft-light'
         }
     ];
-    if (svgBuffer) {
-        images.push({
-            input: svgBuffer,
-            top: 60,
-            left: 0,
-        });
+
+    if (textImage) {
+        images.push(textImage);
     }
     return sharp(image)
         .blur(30)
@@ -74,19 +71,26 @@ async function getTextImage(mandir) {
         if (!caption) {
             return '';
         }
-        const width = 1080;
-        const height = 160;
 
-        const svgImage = `
-      <svg width="${width}" height="${height}">
-        <style>
-        .title { fill: #fff; font-size: 128px; font-weight: bold; border: 2px solid black; }
-        </style>
-        <text x="50%" y="50%" text-anchor="middle" class="title">${caption}</text>
-      </svg>
-      `;
-        const svgBuffer = Buffer.from(svgImage);
-        return svgBuffer;
+        const text = await sharp({
+            text: {
+                align: 'center',
+                text: `<span foreground="white">${caption}</span>`,
+                width: 1080,
+                height: 160,
+                rgba: true
+            }
+        }).png();
+        const { width } = await text.metadata();
+        const left = Math.floor( 540 - (width/2) );
+        console.log(left);
+        const textImage = await text.toBuffer();
+        
+        return { 
+            input: textImage,
+            top: 60,
+            left,
+        };
     } catch (error) {
         console.log(error);
     }
