@@ -60,7 +60,8 @@ async function processImage(image, index, mandir) {
 
 async function getTextImage(mandir) {
     try {
-        const caption = (templeData && templeData[mandir]) ? templeData[mandir].caption || '' : '';
+        let caption = (templeData && templeData[mandir]) ? templeData[mandir].caption || '' : '';
+        caption = Buffer.from(caption, 'utf-8').toString();
         if (!caption) {
             return '';
         }

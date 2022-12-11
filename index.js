@@ -8,7 +8,7 @@ async function run() {
     await createVideo( temple, darshanDate );
     console.log("Video Generated");
     console.log("Start Uploading to Youtube.");
-    await upload( temple, darshanDate );
+   // await upload( temple, darshanDate );
     console.log("Video Uploaded to Youtube!!");
 }
 
