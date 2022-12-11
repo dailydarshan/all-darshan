@@ -2,7 +2,8 @@ const os = require('os');
 
 const axios = require('axios');
 const sharp = require('sharp');
-const templeData = require('./data.json');
+const fs = require('fs')
+const templeData = JSON.parse(fs.readFileSync('./data.json', 'utf-8'));
 
 function getImages(mandir = '', darshanDate) {
     return getDarshanImages(darshanDate, mandir);
