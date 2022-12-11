@@ -29,14 +29,13 @@ function getDarshanImages(darshanDate, mandir) {
 
 
 async function processImage(image, index, mandir) {
-    const path = `${os.tmpdir()}/${mandir.toLowerCase()}${index}.jpg`;
+    const path = `./${mandir.toLowerCase()}${index}.jpg`;
     const textImage = await getTextImage(mandir);
-    let image1 = await sharp(image).resize({width:1080});
-    const { height } = await image1.metadata();
+
+    let image1 = await sharp(image).resize({width:1080}).toBuffer();
+    const { height } = await sharp(image1).metadata();
     if(height > 1920) {
-        image1 = await image1.resize({height: 1920}).toBuffer();
-    }else{
-        image1 = await image1.toBuffer();
+        image1 = await await sharp(image1).resize({height: 1920}).toBuffer();
     }
 
     const images = [
