@@ -14,7 +14,8 @@ const REDIRECT_URI = URI + REDIRECT_PATH;
 async function upload(mandir, darshanDate) {
 
   await authenticateWithOAuth();
-  const videoInformation = await uploadVideo(mandir, darshanDate)
+  const videoInformation = await uploadVideo(mandir, darshanDate);
+  await uploadThumbnail(videoInformation);
 
   async function authenticateWithOAuth() {
     const OAuthClient = await createOAuthClient()
@@ -70,20 +71,41 @@ async function upload(mandir, darshanDate) {
       }
     }
 
-    console.log('> [youtube-robot] Starting to upload the video to YouTube')
+    console.log('> [youtube-upload] Starting to upload the video to YouTube')
     const youtubeResponse = await youtube.videos.insert(requestParameters, {
       onUploadProgress: onUploadProgress
     })
 
-    console.log(`> [youtube-robot] Video available at: https://youtu.be/${youtubeResponse.data.id}`)
+    console.log(`> [youtube-upload] Video available at: https://youtu.be/${youtubeResponse.data.id}`)
     return youtubeResponse.data
 
     function onUploadProgress(event) {
       const progress = Math.round((event.bytesRead / videoFileSize) * 100)
-      console.log(`> [youtube-robot] ${progress}% completed`)
+      console.log(`> [youtube-upload] ${progress}% completed`)
     }
 
   }
+
+  async function uploadThumbnail(videoInformation) {
+    const videoId = videoInformation.id
+    const videoThumbnailFilePath = './youtube-thumbnail.jpg'
+
+    try{
+      const requestParameters = {
+        videoId: videoId,
+        media: {
+          mimeType: 'image/jpeg',
+          body: fs.createReadStream(videoThumbnailFilePath)
+        }
+      }
+
+      const youtubeResponse = await youtube.thumbnails.set(requestParameters)
+      console.log(`> [youtube-upload] Thumbnail uploaded!`)
+    } catch (e) {
+      console.error('Error in upload youtube thumbnail');
+    }
+  }
+ 
 }
 
 module.exports = upload;

@@ -11,12 +11,12 @@ async function createVideo(temple, darshanDate) {
 
     const videoOptions = {
         fps: 25,
-        loop: 5, // seconds
+        loop: 12, // seconds
         transition: true,
         transitionDuration: 1, // seconds
         videoBitrate: 1024,
         videoCodec: 'libx264',
-        size: '1080x?',
+        size: '1920x?',
         audioBitrate: '128k',
         audioChannels: 2,
         format: 'mp4',
@@ -26,15 +26,15 @@ async function createVideo(temple, darshanDate) {
     const processedImages = images.filter(n => n);
     processedImages.push({path: './logo/last.png'});
     try {
-        let loop = round((60 - processedImages.length) / (processedImages.length));
-        if (loop > 5) {
-            loop = 5;
+        let loop = round((62 - processedImages.length + 1 ) / (processedImages.length));
+        if (loop < 12 ) {
+            loop = 12;
         }
         videoOptions.loop = loop;
     } catch (error) { }
 
     return new Promise((resolve, reject) => {
-        const audioName = getRandomInt(14);
+        const audioName = getRandomInt(7);
         videoshow(processedImages, videoOptions)
             .audio(`./audio/${audioName}.mp3`)
             .save(`${temple}.mp4`)
