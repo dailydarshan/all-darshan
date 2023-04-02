@@ -11,8 +11,8 @@ const URI = `http://localhost:${PORT}`;
 const REDIRECT_PATH = '/redirect'
 const REDIRECT_URI = URI + REDIRECT_PATH;
 
-async function upload(mandir, darshanDate) {
-
+async function upload(darshanDate) {
+  const mandir = 'all';
   await authenticateWithOAuth();
   const videoInformation = await uploadVideo(mandir, darshanDate);
   await uploadThumbnail(videoInformation);

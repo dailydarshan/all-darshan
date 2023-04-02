@@ -17,7 +17,7 @@ async function createThumbnail( image, mandir, darshanDate ) {
     if( top < 0 ) {
         top = 0;
     }
-    const path   = './youtube-thumbnail.jpg';
+    const path   = `./${mandir}-thumbnail.jpg`;
     const images = [
         {
             input: resizedImage,

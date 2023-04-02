@@ -2,8 +2,8 @@ const videoshow = require('videoshow');
 
 const getImages = require('./download');
 
-async function createVideo(temple, darshanDate) {
-    const images = await getImages(temple, darshanDate);
+async function createVideo(darshanDate) {
+    const images = await getImages(darshanDate);
     console.log(images);
     if (!images.length) {
         return;
@@ -37,7 +37,7 @@ async function createVideo(temple, darshanDate) {
         const audioName = getRandomInt(7);
         videoshow(processedImages, videoOptions)
             .audio(`./audio/${audioName}.mp3`)
-            .save(`${temple}.mp4`)
+            .save(`all.mp4`)
             .on('start', function (command) {
                 console.log('ffmpeg process started:', command)
             })

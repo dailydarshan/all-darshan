@@ -8,8 +8,18 @@ const templeData = JSON.parse(fs.readFileSync('./data.json', 'utf-8'));
 const createThumbnail = require('./thumbnail');
 const getTodayDate = require('./utils');
 
-function getImages(mandir = '', darshanDate) {
-    return getDarshanImages(darshanDate, mandir);
+async function getImages( darshanDate) {
+    const mandirs = ['Vadtal-Temple', 'Kalupur-Temple', 'Bhuj-Temple',  'Gadhada-Temple',  'Junagadh-Temple', 'Dholera-Temple' ];
+    
+    const images = [];
+    for await (mandir of mandirs) {
+        const image = await getDarshanImages(darshanDate, mandir);
+        if ( image && image.length > 0 ) {
+            images.push(`./${mandir}-thumbnail.jpg`);
+            images.push(...image);
+        }
+    }
+    return images;
 }
 
 function getDarshanImages(darshanDate, mandir) {
