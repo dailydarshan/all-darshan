@@ -1,9 +1,9 @@
-name: Vadtal
+name: All Darshan
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 9 * * *'
+    - cron: '30 12 * * *'
 
 jobs:
   create-video:
@@ -34,6 +34,6 @@ jobs:
         with:
           name: Vadtal-Temple
           path: |
-            Vadtal-Temple.mp4
+            all.mp4
             youtube-thumbnail.jpg
           retention-days: 2
