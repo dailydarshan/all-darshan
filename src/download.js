@@ -5,13 +5,15 @@ const sharp = require('sharp');
 const fs = require('fs')
 const templeData = JSON.parse(fs.readFileSync('./data.json', 'utf-8'));
 
-const createThumbnail = require('./thumbnail');
+const {createThumbnail, createYoutubeThumbnail} = require('./thumbnail');
 const getTodayDate = require('./utils');
 
 async function getImages( darshanDate) {
     const mandirs = ['Vadtal-Temple', 'Kalupur-Temple', 'Bhuj-Temple',  'Gadhada-Temple',  'Junagadh-Temple', 'Dholera-Temple' ];
+
+    await createYoutubeThumbnail( getTodayDate(true) );
     
-    const images = [];
+    const images = ['./youtube-thumbnail.jpg'];
     for await (mandir of mandirs) {
         const image = await getDarshanImages(darshanDate, mandir);
         if ( image && image.length > 0 ) {

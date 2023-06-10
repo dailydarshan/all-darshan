@@ -79,4 +79,56 @@ async function getDateImage(darshanDate) {
     }
 }
 
-module.exports = createThumbnail;
+async function getDateImageThumb(darshanDate) {
+    try {
+        const textArgs = {
+            align: 'center',
+            text: `<span foreground="#CF102F"><b>${darshanDate}</b></span>`,
+            width: 800,
+            height: 180,
+            rgba: true
+        };
+        const textArgs2 = {
+            ...textArgs,
+            text: `<span foreground="white"><b>${darshanDate}</b></span>`,
+        };
+        const text = await sharp({text: textArgs}).png();
+        const text2 = await sharp({text: textArgs2}).png();
+        const textImage = await text.toBuffer();
+        const textImage2 = await text2.toBuffer();
+        
+        return [{ 
+            input: textImage,
+            top: 900,
+            left: 80,
+        }, 
+        { 
+            input: textImage2,
+            top: 895,
+            left: 75,
+        }];
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+async function createYoutubeThumbnail( darshanDate ) {
+    
+    const dateImage = await getDateImageThumb(darshanDate);
+    const image = './thumbnail.jpg';
+
+    const path   = `./youtube-thumbnail.jpg`;
+    const images = [];
+
+    if (dateImage) {
+        images.push(...dateImage);
+    }
+    return sharp(image)
+        .composite(images)
+        .toFile(path)
+        .then(() => path);
+
+}
+
+module.exports = {createThumbnail, createYoutubeThumbnail};

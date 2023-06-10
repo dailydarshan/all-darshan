@@ -11,7 +11,7 @@ async function createVideo(darshanDate) {
 
     const videoOptions = {
         fps: 25,
-        loop: 12, // seconds
+        loop: 8, // seconds
         transition: true,
         transitionDuration: 1, // seconds
         videoBitrate: 1024,
@@ -27,8 +27,8 @@ async function createVideo(darshanDate) {
     processedImages.push({path: './logo/last.png'});
     try {
         let loop = round((62 - processedImages.length + 1 ) / (processedImages.length));
-        if (loop < 12 ) {
-            loop = 12;
+        if (loop < 8 ) {
+            loop = 8;
         }
         videoOptions.loop = loop;
     } catch (error) { }
